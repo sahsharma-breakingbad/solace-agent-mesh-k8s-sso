@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: solace-agent-mesh-svc
+  namespace: sam-infra
+spec:
+  type: LoadBalancer
+  selector:
+    app: solace-agent-mesh
+  ports:
+    - protocol: TCP
+      port: 8000           # external port
+      targetPort: 8000     # pod container port
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
