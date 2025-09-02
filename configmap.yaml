@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: solace-agent-mesh-config
 data:
+  # Note: For separation of concerns: 
+  # Option 1: Use Kustomize to dynamically generate the config map from local files. 
+  # Option 2: Use volumes to mount files into ConfigMap
   logging_config.ini: |
     [loggers]
     keys=root,LiteLLM,py_warnings,solace_ai_connector,uvicorn,uvicorn_error,uvicorn_access
