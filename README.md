@@ -94,8 +94,8 @@ The system is configured through:
      LOGGING_CONFIG_PATH: ""            # e.g., configs/logging_config.ini
    ```
 
-   > [!NOTE]
-   > The `secret.yaml` file is included in `.gitignore` to prevent sensitive information from being committed to the repository.
+> [!NOTE]
+> The `secret.yaml` file is included in `.gitignore` to prevent sensitive information from being committed to the repository.
 
 2. Encode your values using base64:
    ```bash
