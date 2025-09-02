@@ -12,8 +12,13 @@ Solace Agent Mesh is a framework for deploying, managing, and orchestrating AI a
   - **Markdown Creator**: Converts various file types to Markdown
   - **Mermaid Diagram Generator**: Creates PNG images from Mermaid diagram syntax
   - **Web Agent**: Fetches content from web URLs
+- **Custom Agents**:
+  - **Native SAM**: Python based scaffolded using the SAM agent builder
+  - **MCP**: Any MCP agent built with the MCP protocol
+  - **A2A**: Agents built with the A2A protocols
+  - **AWS Bedrock**: AWS Bedrock agents
 
-more information on Solace Agent Mesh on this github repo https://github.com/SolaceLabs/solace-agent-mesh
+More information on Solace Agent Mesh on this github repo https://github.com/SolaceLabs/solace-agent-mesh
 
 ## Repository Structure
 
