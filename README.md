@@ -1,4 +1,4 @@
-# Solace Agent Mesh (SAM) Infrastructure
+# Solace Agent Mesh (SAM) K8s configuration
 
 This repository contains Kubernetes configuration files for deploying and managing Solace Agent Mesh (SAM) on AKS via K8s deployment files. 
 
