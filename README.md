@@ -1,5 +1,28 @@
 # Solace Agent Mesh (SAM) K8s configuration
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Repository Structure](#repository-structure)
+- [Components](#components)
+  - [Solace Broker](#solace-broker)
+  - [Core SAM Deployment](#core-sam-deployment)
+  - [Built-in Agents](#built-in-agents)
+  - [Configuration](#configuration)
+- [Prerequisites](#prerequisites)
+- [Deployment](#deployment)
+- [Configuration Options](#configuration-options)
+  - [Environment Variables](#environment-variables)
+- [Accessing the Web UI](#accessing-the-web-ui)
+- [Customization](#customization)
+  - [Adding New Agents](#adding-new-agents)
+  - [Scaling](#scaling)
+- [Troubleshooting](#troubleshooting)
+  - [Checking Logs](#checking-logs)
+  - [Restart pod](#restart-pod)
+  - [Delete pod](#delete-pod)
+  - [Common Issues](#common-issues)
+
 This repository contains Kubernetes configuration files for deploying and managing Solace Agent Mesh (SAM) on AKS via K8s deployment files. 
 
 ## Overview
@@ -34,6 +57,10 @@ More information on Solace Agent Mesh on this github repo https://github.com/Sol
 ```
 
 ## Components
+
+### Solace Broker
+
+A deployment of the standard edition Solace message broker that provides the messaging infrastructure for the agent mesh. The broker is deployed as a Kubernetes service and is accessible to other pods within the cluster.
 
 ### Core SAM Deployment
 
@@ -107,9 +134,10 @@ The system is configured through:
    ```bash
    kubectl apply -f configmap.yaml
    kubectl apply -f secret.yaml
+   kubectl apply -f service.yaml
+   kubectl apply -f solace-broker/broker.yaml
    kubectl apply -f core-sam/deployment_basic.yaml
    kubectl apply -f bultin-agents/built-in-agents.yaml
-   kubectl apply -f service.yaml
    ```
 
 3. Verify the deployment:
@@ -147,6 +175,12 @@ kubectl get service solace-agent-mesh-svc -n sam-infra
 
 Use the external IP and port 8000 to access the Web UI.
 
+You can also expose the admin broker port as follows
+
+```bash
+kubectl port-forward <broker_pod_name> 8080:8080 -n sam-infra
+```
+
 > [!TIP]
 > You can port-forward the access to the WebUI GUI to your local host as follows `kubectl port-forward svc/solace-agent-mesh-svc 8000:8000 -n sam-infra`
 
@@ -174,6 +208,15 @@ kubectl logs -l app=solace-agent-mesh
 
 # For the core agents
 kubectl logs -l app=sam-core-agents
+```
+### Restart pod
+```
+kubectl delete pod <pod-name> -n <namespace>
+```
+
+### Delete pod
+```
+kubectl delete -f deployment.yaml
 ```
 
 ### Common Issues

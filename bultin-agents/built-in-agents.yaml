@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sam-core-agents
+  namespace: sam-infra
   labels:
     app: sam-core-agents
 spec:

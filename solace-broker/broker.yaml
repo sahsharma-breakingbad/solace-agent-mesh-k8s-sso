@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solace-broker
+  namespace: sam-infra
+  labels:
+    app: solace-broker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: solace-broker
+  template:
+    metadata:
+      labels:
+        app: solace-broker
+    spec:
+      containers:
+      - name: solace-broker
+        image: solace/solace-pubsub-standard:latest
+        ports:
+          - containerPort: 8080  # Web transport
+          - containerPort: 1883  # MQTT
+          - containerPort: 5672  # AMQP
+          - containerPort: 8008  # SEMP/REST API
+          - containerPort: 55555 # SMF
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "4Gi"
+            cpu: "1000m"
+        env:
+          - name: username_admin_globalaccesslevel
+            value: "admin"
+          - name: username_admin_password
+            value: "admin"
+          - name: system_scaling_maxconnectioncount
+            value: "100"
+        volumeMounts:
+          - name: dshm
+            mountPath: /dev/shm
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi  # Allocate 1GB of shared memory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: solace-broker-service
+  labels:
+    app: solace-broker
+spec:
+  selector:
+    app: solace-broker
+  ports:
+  - name: web-transport
+    port: 8080
+    targetPort: 8080
+  - name: mqtt
+    port: 1883
+    targetPort: 1883
+  - name: amqp
+    port: 5672
+    targetPort: 5672
+  - name: semp-rest
+    port: 8008
+    targetPort: 8008
+  - name: smf
+    port: 55555
+    targetPort: 55555
+  type: ClusterIP

@@ -8,8 +8,13 @@ spec:
   selector:
     app: solace-agent-mesh
   ports:
-    - protocol: TCP
+    - name: sam-webui
+      protocol: TCP
       port: 8000           # external port
       targetPort: 8000     # pod container port
+    - name: broker-admin
+      protocol: TCP
+      port: 8008           # external port
+      targetPort: 8008     # pod container port
   sessionAffinity: None
   externalTrafficPolicy: Cluster
