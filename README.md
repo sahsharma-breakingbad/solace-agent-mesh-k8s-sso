@@ -166,24 +166,21 @@ Key environment variables that can be configured in the `secret.yaml` file:
 - `FASTAPI_HOST`: Host for the FastAPI server
 - `FASTAPI_PORT`: Port for the FastAPI server
 
-## Accessing the Web UI
+## Accessing the Web GUIs
 
-Once deployed, the Web UI can be accessed through the LoadBalancer service:
+Once deployed, the SAM Web UI gateway and the Solace Broker Admin console can be accessed through the LoadBalancer service:
 
 ```bash
 kubectl get service solace-agent-mesh-svc -n sam-infra
+kubectl get service solace-broker-admin-svc -n sam-infra
+
 ```
 
-Use the external IP and port 8000 to access the Web UI.
+Use the external IP and port 8000, and 8008 to access the Web UI and the broker management console respectively.
 
-You can also expose the admin broker port as follows
-
-```bash
-kubectl port-forward <broker_pod_name> 8080:8080 -n sam-infra
-```
 
 > [!TIP]
-> You can port-forward the access to the WebUI GUI to your local host as follows `kubectl port-forward svc/solace-agent-mesh-svc 8000:8000 -n sam-infra`
+> You can port-forward the access to the WebUI GUI to your local host as follows `kubectl port-forward svc/solace-agent-mesh-svc 8000:8000 -n sam-infra` and `kubectl port-forward <broker_pod_name> 8080:8080 -n sam-infra`
 
 > [!CAUTION]
 > Do not use port forwarding in production!
