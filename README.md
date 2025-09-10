@@ -125,6 +125,10 @@ The system is configured through:
 > [!NOTE]
 > The `secret.yaml` file is included in `.gitignore` to prevent sensitive information from being committed to the repository.
 
+> [!NOTE]
+> Check `secret-example.yaml` for an example filled file
+
+
 2. Encode your values using base64:
    ```bash
    # Example for encoding values
