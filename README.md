@@ -105,18 +105,18 @@ The system is configured through:
      LLM_SERVICE_PLANNING_MODEL_NAME: "" # e.g., openai/gpt-4o
      LLM_SERVICE_GENERAL_MODEL_NAME: "" # e.g., openai/gpt-4o
      NAMESPACE: ""                      # e.g., sam-infra
-     SOLACE_BROKER_URL: ""              # e.g., ws://localhost:8080 or for in-cluster software broker: ws://solace-broker-service:8008
-                                        # Base64 encoded value for software broker: d3M6Ly9zb2xhY2UtYnJva2VyLXNlcnZpY2U6ODAwOA==
+     SOLACE_BROKER_URL: ""              # e.g., ws://localhost:8008 or for in-cluster software broker: ws://solace-broker-service:8008
+                                        # Base64 encoded value for software broker: d3M6Ly9zb2xhY2UtYnJva2VyLXNlcnZpY2U6ODAwOAo=
      SOLACE_BROKER_VPN: ""              # e.g., default
-     SOLACE_BROKER_USERNAME: ""         # Your Solace broker username
-     SOLACE_BROKER_PASSWORD: ""         # Your Solace broker password
+     SOLACE_BROKER_USERNAME: ""         # e.g. admin
+     SOLACE_BROKER_PASSWORD: ""         # e.g. admin
      SOLACE_DEV_MODE: ""                # true or false
-     SESSION_SECRET_KEY: ""             # Secret key for session management
+     SESSION_SECRET_KEY: ""             # Secret key for session management, any key here
      FASTAPI_HOST: ""                   # e.g., 127.0.0.1
      FASTAPI_PORT: ""                   # e.g., 8000
      FASTAPI_HTTPS_PORT: ""             # e.g., 8443
-     SSL_KEYFILE: ""                    # Path to SSL key file (if using HTTPS)
-     SSL_CERTFILE: ""                   # Path to SSL certificate file (if using HTTPS)
+     SSL_KEYFILE: ""                    # Path to SSL key file (if using HTTPS). Keep empty if not used
+     SSL_CERTFILE: ""                   # Path to SSL certificate file (if using HTTPS). Keep empty if not used
      SSL_KEYFILE_PASSWORD: ""           # Password for SSL key file (if needed)
      ENABLE_EMBED_RESOLUTION: ""        # e.g., True
      LOGGING_CONFIG_PATH: ""            # e.g., configs/logging_config.ini
