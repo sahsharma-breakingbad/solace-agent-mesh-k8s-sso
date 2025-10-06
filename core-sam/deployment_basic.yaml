@@ -27,6 +27,8 @@ spec:
         # The arguments now include the 'configs/' path prefix
         args:
         - "configs/main_orchestrator.yaml"
+        - "configs/oauth2_server.yaml"
+        - "configs/oauth2_config.yaml"
         - "configs/webui.yaml"
         envFrom:
         - secretRef:
