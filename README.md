@@ -125,7 +125,7 @@ The system is configured through:
      AZURE_CLIENT_ID: "xxxxxxxxx-xxxxxx-xxxxxxxx-xxxxxxxxxx"
      AZURE_CLIENT_SECRET: "xxxxxxxxx-xxxxxx-xxxxxxxx-xxxxxxxxxx"
      OAUTH2_ENABLED: "true"
-     OAUTH2_LOG_LEVEL: "DEBUG”
+     OAUTH2_LOG_LEVEL: "DEBUG"
      OAUTH2_DEV_MODE: "true"
      OAUTH2_HOST: "0.0.0.0"
      OAUTH2_PORT: "9000"
