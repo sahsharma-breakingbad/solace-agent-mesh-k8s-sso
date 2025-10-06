@@ -1,4 +1,4 @@
-# Solace Agent Mesh (SAM) K8s configuration
+# Solace Agent Mesh (SAM) K8s configuration with SSO enable 
 
 ## Table of Contents
 
