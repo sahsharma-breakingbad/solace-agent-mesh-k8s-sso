@@ -120,7 +120,23 @@ The system is configured through:
      SSL_KEYFILE_PASSWORD: ""           # Password for SSL key file (if needed)
      ENABLE_EMBED_RESOLUTION: ""        # e.g., True
      LOGGING_CONFIG_PATH: ""            # e.g., configs/logging_config.ini
+   
    ```
+    ##SSO configuration related file 
+    AZURE_TENANT_ID: "xxxxxxxxx-xxxxxx-xxxxxxxx-xxxxxxxxxx"
+    AZURE_CLIENT_ID: "xxxxxxxxx-xxxxxx-xxxxxxxx-xxxxxxxxxx"
+    AZURE_CLIENT_SECRET: "xxxxxxxxx-xxxxxx-xxxxxxxx-xxxxxxxxxx"
+    OAUTH2_ENABLED: "true"
+    OAUTH2_LOG_LEVEL: "DEBUG”
+    OAUTH2_DEV_MODE: "true"
+    OAUTH2_HOST: "0.0.0.0"
+    OAUTH2_PORT: "9000"
+    FRONTEND_USE_AUTHORIZATION: "true"
+    FRONTEND_REDIRECT_URL: "http://<<host>>:<<port>>"
+    FRONTEND_AUTH_LOGIN_URL: "http://<<host>>:<<port>>/api/v1/auth/login"
+    EXTERNAL_AUTH_SERVICE_URL: "http://<<host>>:<<port>>"
+    EXTERNAL_AUTH_PROVIDER: "azure"
+    EXTERNAL_AUTH_CALLBACK: "http://<<host>>:<<port>>/api/v1/auth/callback"
 
 > [!NOTE]
 > The `secret.yaml` file is included in `.gitignore` to prevent sensitive information from being committed to the repository.
