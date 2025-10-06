@@ -156,6 +156,124 @@ data:
           inter_agent_communication:
             allow_list: ["*"]
             request_timeout_seconds: 600
+  oauth2_server.yaml: |
+    # Example gateway configuration with OAuth2 service integration
+    # This shows how to configure a gateway to use the OAuth2 authentication service
+    
+    log:
+      stdout_log_level: INFO
+      log_file_level: DEBUG
+      log_file: oauth_server.log
+    
+    !include ../shared_config.yaml
+    
+    shared_config:
+      # OAuth2 service configuration
+      - oauth2_config: &oauth2_config
+          enabled: true
+          config_file: "configs/sso_vol/oauth2_config.yaml"
+          host: ${OAUTH2_HOST, localhost}
+          port: ${OAUTH2_PORT, 9000}
+          ssl_cert: ""  # Optional: path to SSL certificate
+          ssl_key: ""   # Optional: path to SSL private key
+    
+    flows:
+      # Initialize OAuth2 service
+      - name: oauth2_service
+        components:
+          - component_name: oauth2_auth_service
+            component_module:  solace_agent_mesh_enterprise.components.oauth2_component
+            component_config:
+              <<: *oauth2_config
+  oauth2_config.yaml: |
+    # OAuth2 Service Configuration
+    # This file configures the OAuth2 authentication service that supports multiple providers
+    # All providers now use the unified OIDC approach with automatic endpoint discovery
+    
+    # Enable or disable the OAuth2 service
+    enabled: ${OAUTH2_ENABLED:false}
+    
+    # Development mode - enables insecure transport and relaxed token scope for local development
+    # Set OAUTH2_DEV_MODE=true for local development (NEVER use in production!)
+    development_mode: ${OAUTH2_DEV_MODE:false}
+    
+    # OAuth2 providers configuration
+    # All providers now use the unified OIDCProvider with automatic endpoint discovery
+    providers:
+      # Google OAuth2 provider
+      # google:
+      #   # OIDC issuer URL - endpoints will be discovered automatically
+      #   issuer: "https://accounts.google.com"
+      #   client_id: ${GOOGLE_CLIENT_ID}
+      #   client_secret: ${GOOGLE_CLIENT_SECRET}
+      #   redirect_uri: ${GOOGLE_REDIRECT_URI:http://localhost:8080/callback}
+      #   scope: "openid email profile"
+    
+      # Azure/Microsoft OAuth2 provider
+      azure:
+        # Azure OIDC issuer URL includes tenant ID
+        issuer: https://login.microsoftonline.com/${AZURE_TENANT_ID}/v2.0
+        client_id: ${AZURE_CLIENT_ID}
+        client_secret: ${AZURE_CLIENT_SECRET}
+        redirect_uri: ${AZURE_REDIRECT_URI:http://localhost:8080/callback}
+        scope: "openid email profile offline_access"
+    
+      # Auth0 OAuth2 provider
+      # auth0:
+      #   # Auth0 issuer URL
+      #   issuer: ${AUTH0_ISSUER:https://your-domain.auth0.com/}
+      #   client_id: ${AUTH0_CLIENT_ID}
+      #   client_secret: ${AUTH0_CLIENT_SECRET}
+      #   redirect_uri: ${AUTH0_REDIRECT_URI:http://localhost:8080/callback}
+      #   scope: "openid email profile"
+      #   # Optional: Auth0 audience for API access
+      #   audience: ${AUTH0_AUDIENCE:}
+    
+      # # Okta OAuth2 provider (example)
+      # okta:
+      #   issuer: ${OKTA_ISSUER:https://your-okta-domain.okta.com/oauth2/default}
+      #   client_id: ${OKTA_CLIENT_ID}
+      #   client_secret: ${OKTA_CLIENT_SECRET}
+      #   redirect_uri: ${OKTA_REDIRECT_URI:http://localhost:8080/callback}
+      #   scope: "openid email profile"
+    
+      # # Keycloak OAuth2 provider (example)
+      # keycloak:
+      #   issuer: ${KEYCLOAK_ISSUER:https://your-keycloak.com/auth/realms/your-realm}
+      #   client_id: ${KEYCLOAK_CLIENT_ID}
+      #   client_secret: ${KEYCLOAK_CLIENT_SECRET}
+      #   redirect_uri: ${KEYCLOAK_REDIRECT_URI:http://localhost:8080/callback}
+      #   scope: "openid email profile"
+    
+      # # Generic OIDC provider (for any standard OIDC-compliant provider)
+      # custom_oidc:
+      #   # Just provide the issuer URL and the service will discover all endpoints
+      #   issuer: ${CUSTOM_OIDC_ISSUER:https://your-provider.com}
+      #   client_id: ${CUSTOM_OIDC_CLIENT_ID}
+      #   client_secret: ${CUSTOM_OIDC_CLIENT_SECRET}
+      #   redirect_uri: ${CUSTOM_OIDC_REDIRECT_URI:http://localhost:8080/callback}
+      #   scope: "openid email profile"
+    
+    # Logging configuration
+    logging:
+      level: ${OAUTH2_LOG_LEVEL:INFO}
+    
+    # Session configuration
+    session:
+      # Session timeout in seconds (default: 1 hour)
+      timeout: ${OAUTH2_SESSION_TIMEOUT:3600}
+    
+    # Security configuration
+    security:
+      # CORS settings
+      cors:
+        enabled: ${OAUTH2_CORS_ENABLED:true}
+        origins: ${OAUTH2_CORS_ORIGINS:*}
+    
+      # Rate limiting
+      rate_limit:
+        enabled: ${OAUTH2_RATE_LIMIT_ENABLED:true}
+        requests_per_minute: ${OAUTH2_RATE_LIMIT_RPM:60}   
   webui.yaml: |
     # Solace Agent Mesh WebUI Gateway Configuration
     log:
@@ -197,7 +315,17 @@ data:
           # --- Frontend Config Passthrough ---
           frontend_welcome_message: >
           frontend_bot_name: Solace Agent Mesh
-          frontend_collect_feedback: false  
+          frontend_collect_feedback: false
+
+          ##SSO related Configurations
+          frontend_auth_login_url: ${FRONTEND_AUTH_LOGIN_URL, http://localhost:5001/api/v1/auth/login}
+          frontend_use_authorization: ${FRONTEND_USE_AUTHORIZATION, false} 
+          frontend_redirect_url: ${FRONTEND_REDIRECT_URL, ""} 
+          
+          external_auth_callback_uri: ${EXTERNAL_AUTH_CALLBACK, http://localhost:8000/api/v1/auth/callback} 
+          external_auth_service_url: ${EXTERNAL_AUTH_SERVICE_URL, http://localhost:8050}
+          external_auth_provider: ${EXTERNAL_AUTH_PROVIDER, azure}
+
   core_agents.yaml: |
     log:
       stdout_log_level: INFO
